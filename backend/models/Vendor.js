@@ -16,20 +16,20 @@ const VendorSchema = new mongoose.Schema({
     }
   },
 
-  foodType: String,
+  // foodType: String,
   dailyNeeds: [String],
   pricePreference: {
     type: String,
     enum: ["Low", "Medium", "High"],
     default: "Low"
   },
-  supplierPreference: String,
+  // supplierPreference: String,
 
   reviewsGiven: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
   favoriteSuppliers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Supplier" }],
   groupBuysJoined: [{ type: mongoose.Schema.Types.ObjectId, ref: "GroupBuy" }],
 
-  isActive: { type: Boolean, default: true },
+  // isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now }
 });
 

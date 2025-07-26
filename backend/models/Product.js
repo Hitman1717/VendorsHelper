@@ -12,6 +12,7 @@ const ProductSchema = new mongoose.Schema({
   },
   availableQuantity: { type: Number, required: true },
   imageUrl: String,
+  videoUrl:String,
   deliveryAvailable: { type: Boolean, default: true },
   category: String // e.g., Oil, Grain, Spices
 }, { timestamps: true });

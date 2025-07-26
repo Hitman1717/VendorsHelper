@@ -1,15 +1,18 @@
 const express = require("express");
 const router = express.Router();
+
 const {
+  registerSupplier,
   getSupplierProfile,
   updateSupplierProfile,
-  listSuppliers
+  listSuppliers,
 } = require("../controllers/supplierController");
 
 const { protect } = require("../middleware/authMiddleware");
 
-router.get("/me", protect, getSupplierProfile);
-router.put("/me", protect, updateSupplierProfile);
-router.get("/", listSuppliers); // public listing
+router.post("/register", registerSupplier); // Public
+router.get("/me", protect, getSupplierProfile);    // Protected
+router.put("/me", protect, updateSupplierProfile); // Protected
+router.get("/", listSuppliers);                    // Public
 
 module.exports = router;

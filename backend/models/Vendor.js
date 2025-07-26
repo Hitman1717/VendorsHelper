@@ -10,10 +10,10 @@ const VendorSchema = new mongoose.Schema({
   location: {
     city: String,
     pincode: String,
-    geo: {
-      lat: Number,
-      lng: Number
-    }
+    // geo: {
+    //   lat: Number,
+    //   lng: Number
+    // }
   },
 
   // foodType: String,
@@ -29,7 +29,7 @@ const VendorSchema = new mongoose.Schema({
   favoriteSuppliers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Supplier" }],
   groupBuysJoined: [{ type: mongoose.Schema.Types.ObjectId, ref: "GroupBuy" }],
 
-  // isActive: { type: Boolean, default: true },
+   bestbuyer: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now }
 });
 

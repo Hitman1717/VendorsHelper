@@ -1,19 +1,64 @@
-{
-    "_id": "6884dce0906e95dfcfc9b576",
-    "shopName": "Prem sai Chai Tapri",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODRkY2UwOTA2ZTk1ZGZjZmM5YjU3NiIsInJvbGUiOiJzdXBwbGllciIsImlhdCI6MTc1MzUzNzc2MSwiZXhwIjoxNzU2MTI5NzYxfQ.MxH0QyY0PfLWKVo19PhyXfdeuR-wcRMnqL6Uyc_7ht0"
-}
+[
+  {
+    "name": "Ravi Kumar",
+    "businessName": "Ravi Fresh Foods",
+    "phone": "9876543210",
+    "email": "ravi.fresh@example.com",
+    "password": "ravifresh@123",
+    "businessLocation": "Madhapur",
+    "landMark": "Near Cyber Towers",
+    "pincode": "500081",
+    "role": "vendor"
+  },
+  {
+    "name": "Sita Rani",
+    "businessName": "Sita's Spices & Grains",
+    "phone": "9123456789",
+    "email": "sita.spices@example.com",
+    "password": "spicequeen@2025",
+    "businessLocation": "Begumpet",
+    "landMark": "Next to Lifestyle Mall",
+    "pincode": "500016",
+    "role": "vendor"
+  }
+]
+
+[
+  {
+    "name": "Ahmed Ali",
+    "businessName": "Ali Wholesale Traders",
+    "phone": "9988776655",
+    "email": "ali.wholesale@example.com",
+    "password": "aliwst@123",
+    "businessLocation": "Charminar",
+    "landMark": "Near Mecca Masjid",
+    "pincode": "500002",
+    "role": "supplier"
+  },
+  {
+    "name": "Deepa Joshi",
+    "businessName": "Deepa Agro Supply",
+    "phone": "9090909090",
+    "email": "deepa.agro@example.com",
+    "password": "deepaagro@456",
+    "businessLocation": "Kukatpally",
+    "landMark": "Opposite Forum Mall",
+    "pincode": "500072",
+    "role": "supplier"
+  }
+]
 
 {
-    "_id": "6884df21a013213f25cc7c7f",
-    "name": "Sai Krishna Siddu",
-    "phone": "1234565432",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODRkZjIxYTAxMzIxM2YyNWNjN2M3ZiIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE3NTM1MzgzMzcsImV4cCI6MTc1NjEzMDMzN30.K2bo4S1sduEWfeOcZzmQj3WsT2NkV7qYbyf04tGw-7M"
+    "_id": "6885aea79fd728fe5bc2e058",
+    "name": "Ravi Kumar",
+    "shopName": "Ravi Fresh Foods",
+    "role": "vendor",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODVhZWE3OWZkNzI4ZmU1YmMyZTA1OCIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE3NTM1OTE3NDYsImV4cCI6MTc1NjE4Mzc0Nn0.FXzh5nEfva59Hze2VLm6XtignJ9ZmsRCvf_CcgUoPfE"
 }
-
 {
-    "_id": "6884ee0e84257443e1615aa4",
-    "name": "Ayesha Khan",
-    "phone": "98765432107",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODRlZTBlODQyNTc0NDNlMTYxNWFhNCIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE3NTM1NDIxNTgsImV4cCI6MTc1NjEzNDE1OH0.4iqJLcz3FeX9qWJSIt0G4vrODC6zd8cfrZNLfVCjZ9U"
+    "_id": "6885aef19fd728fe5bc2e061",
+    "name": "Deepa Joshi",
+    "shopName": "Deepa Agro Supply",
+    "role": "supplier",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODVhZWYxOWZkNzI4ZmU1YmMyZTA2MSIsInJvbGUiOiJzdXBwbGllciIsImlhdCI6MTc1MzU5MTgxOSwiZXhwIjoxNzU2MTgzODE5fQ.jioCnQXBZ_PRG47lAF_9Khr8bDetoSg7bNA73DbGg7U"
 }

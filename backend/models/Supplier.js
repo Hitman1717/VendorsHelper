@@ -8,13 +8,13 @@ const SupplierSchema = new mongoose.Schema({
   passwordHash: { type: String, required: true },
   role:{type:String,default:"supplier"},
   address: {
-    full: String,
-    city: String,
+    businessLocation: String,
+    landMark: String,
     pincode: String,
-    geo: {
-      lat: Number,
-      lng: Number
-    }
+    // geo: {
+    //   lat: Number,
+    //   lng: Number
+    // }
   },
 
   supplierType: {

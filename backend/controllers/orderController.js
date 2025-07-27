@@ -1,4 +1,4 @@
-const Order = require("../models/OrderSchema");
+const Order = require("../models/Order");
 const Product = require("../models/Product");
 
 // @desc    Vendor places a new order

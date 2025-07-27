@@ -14,7 +14,7 @@ const { protect } = require("../middleware/authMiddleware");
 router.get("/me", protect, getSupplierProfile);    // Protected
 router.put("/me", protect, updateSupplierProfile); // Protected
 router.get("/", listSuppliers);                    // Public
-router.get("/supplier", protect, getOrdersForSupplier);
+router.get("/orders", protect, getOrdersForSupplier);
 
 
 module.exports = router;

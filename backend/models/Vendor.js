@@ -7,8 +7,9 @@ const VendorSchema = new mongoose.Schema({
   email: { type: String, unique: true, sparse: true },
   passwordHash: { type: String, required: true },
   role:{type:String,default:"supplier"},
-  location: {
-    city: String,
+  address: {
+    BusinessLocation: String,
+    LandMark: String,
     pincode: String,
     // geo: {
     //   lat: Number,

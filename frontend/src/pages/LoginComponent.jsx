@@ -32,7 +32,7 @@ const LoginComponent = () => {
       // Store token
       localStorage.setItem("token", data.token);
       alert("Login successful!");
-      window.location.href = "/supplier-dashboard";
+      window.location.href = "/dashboard";
 
     } catch (error) {
       console.error("Login error:", error);

@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiEdit2, FiSearch, FiPlus } from 'react-icons/fi';
-import '../pages/Dashboard.css'; // We'll add new styles to this file
+import '../pages/Dashboard.css';
 import { Link } from 'react-router-dom';
-
-// Dummy data based on your design
-const productsData = [
-  {
-    id: '002',
-    name: 'Cashews',
-    quantity: '10kg',
-    description: 'Premium quality whole cashews.',
-    imageUrl: 'https://res.cloudinary.com/hz3gmuqw6/image/upload/c_fill,h_450,q_auto,w_710/f_auto/healthiest-nuts-phpuOEIm3' // Using the image you provided
-  },
-  // Add more products here
-];
+import axios from 'axios';
 
 const ProductManagement = () => {
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const token = localStorage.getItem("token");
+
+      try {
+        const response = await axios.get("http://localhost:5000/api/products/myproducts", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        alert("Failed to load products.");
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <main className="main-content product-management-page">
@@ -41,21 +55,23 @@ const ProductManagement = () => {
           <span>Product id</span>
           <span>Product name</span>
           <span>Quantity / units</span>
-          <span>Description</span>
+          <span>Price (₹)</span> {/* updated label */}
           <span>Image</span>
         </div>
-        {productsData.map(product => (
-          <div className="table-row" key={product.id}>
-            <span>{product.id}</span>
+
+        {filteredProducts.map(product => (
+          <div className="table-row" key={product._id}>
+            <span>{product._id.slice(0, 6).toUpperCase()}</span>
             <span>{product.name}</span>
-            <span>{product.quantity}</span>
-            <span>{product.description}</span>
-            <span><img src={product.imageUrl} alt={product.name} className="product-thumbnail" /></span>
+            <span>{product.availableQuantity} {product.unit}</span>
+            <span>₹{product.pricePerUnit}</span> {/* use price instead of description */}
+            <span>
+              <img src={product.imageUrl} alt={product.name} className="product-thumbnail" />
+            </span>
           </div>
         ))}
       </div>
 
-      {/* Floating Action Button to add a new product */}
       <button className="fab-add-button" title="Add New Product">
         <FiPlus />
       </button>

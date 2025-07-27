@@ -2,6 +2,8 @@ const Supplier = require("../models/Supplier");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Order = require("../models/Order");
+const mongoose=require("mongoose");
+const Product=require("../models/Product");
 
 
 // Generate JWT
@@ -95,16 +97,110 @@ const listSuppliers = async (req, res) => {
 // @route GET /api/orders/supplier
 // @access Private (Supplier only)
 const getOrdersForSupplier = async (req, res) => {
+  // Ensure the user is a supplier
+  if (req.user.role !== "supplier") {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
   try {
     const orders = await Order.find({ supplierId: req.user.id })
-      .populate("vendorId", "name businessName phone")
-      .populate("productId", "name unit imageUrl category")
-      .sort({ createdAt: -1 });
+      .populate("vendorId", "name businessName phone") // Populates vendor info
+      .populate("productId", "name unit imageUrl category") // Populates product info
+      .sort({ createdAt: -1 }); // Shows newest orders first
 
     res.status(200).json(orders);
   } catch (error) {
-    console.error("Error getting supplier orders:", error);
     res.status(500).json({ message: "Server error fetching orders" });
+  }
+};
+// In your orderController.js
+const updateOrderStatus = async (req, res) => {
+  if (req.user.role !== "supplier") {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  const session = await mongoose.startSession(); // Use a transaction here!
+  session.startTransaction();
+
+  try {
+    const { deliveryStatus } = req.body;
+    const { orderId } = req.params;
+
+    if (deliveryStatus !== 'shipped' && deliveryStatus !== 'cancelled') {
+        return res.status(400).json({ message: "Action not applicable or status invalid" });
+    }
+
+    const order = await Order.findById(orderId).session(session);
+    if (!order || order.supplierId.toString() !== req.user.id) {
+        await session.abortTransaction();
+        session.endSession();
+        return res.status(404).json({ message: "Order not found or you are not authorized" });
+    }
+
+    // ✅ NEW LOGIC STARTS HERE
+    if (deliveryStatus === 'shipped') {
+      const product = await Product.findById(order.productId).session(session);
+
+      // 1. Check if there is enough stock
+      if (product.availableQuantity < order.quantity) {
+        await session.abortTransaction();
+        session.endSession();
+        return res.status(400).json({ message: `Not enough stock to ship. Only ${product.availableQuantity}${product.unit} left.` });
+      }
+
+      // 2. If stock is available, deduct it
+      product.availableQuantity -= order.quantity;
+      await product.save({ session });
+    }
+    // ✅ NEW LOGIC ENDS HERE
+
+    order.deliveryStatus = deliveryStatus;
+    await order.save({ session });
+    
+    await session.commitTransaction();
+    session.endSession();
+
+    res.status(200).json({ message: "Order status updated successfully", order });
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    res.status(500).json({ message: "Server error updating order status" });
+    console.log(error)
+  }
+};
+// In your orderController.js
+const updatePaymentStatus = async (req, res) => {
+  // Ensure the user is a supplier
+  if (req.user.role !== "supplier") {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+
+  try {
+    const { paymentStatus } = req.body;
+    const { orderId } = req.params;
+
+    // Check if the provided status is valid
+    const allowedStatuses = ["successful", "failed"];
+    if (!allowedStatuses.includes(paymentStatus)) {
+      return res.status(400).json({ message: "Invalid payment status value" });
+    }
+
+    // Find the order that belongs to this supplier
+    const order = await Order.findOne({
+      _id: orderId,
+      supplierId: req.user.id,
+    });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found or you are not authorized" });
+    }
+
+    order.paymentStatus = paymentStatus;
+    await order.save();
+
+    res.status(200).json({ message: "Payment status updated successfully", order });
+  } catch (error) {
+    res.status(500).json({ message: "Server error updating payment status" });
   }
 };
 
@@ -113,5 +209,5 @@ module.exports = {
   getSupplierProfile,
   updateSupplierProfile,
   listSuppliers,
-  getOrdersForSupplier,
+  getOrdersForSupplier,updateOrderStatus,updatePaymentStatus
 };

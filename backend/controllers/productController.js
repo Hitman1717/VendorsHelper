@@ -60,6 +60,25 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+exports.getSupplierProducts = async (req, res) => {
+  try {
+    // The 'protect' middleware already verifies the user's role and attaches the user's ID.
+    // We just need to ensure the role is 'supplier' for this specific action.
+    if (req.user.role !== "supplier") {
+      return res.status(403).json({ message: "Forbidden: You are not a supplier." });
+    }
+
+    // Find all products where the supplierId matches the logged-in user's ID
+    const products = await Product.find({ supplierId: req.user.id })
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    res.json(products);
+
+  } catch (err) {
+    console.error("Error fetching supplier products:", err);
+    res.status(500).json({ message: "Server error while fetching products." });
+  }
+};
 
 // Update product
 exports.updateProduct = async (req, res) => {

@@ -9,6 +9,13 @@ body {
     color: #1a202c;
 }
 
+.product-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
 /* Main Dashboard Layout */
 .dashboard-layout {
     display: flex;
@@ -58,7 +65,64 @@ body {
     background-color: #f3e8ff;
     color: #805ad5;
 }
+.pending-orders-page .table-header,
+.pending-orders-page .table-row {
+    grid-template-columns: 1fr 2fr 1.5fr 1fr 1.5fr; /* Adjusted for 5 columns */
+}
 
+/* Container for the action buttons */
+.order-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-start;
+}
+
+/* Base style for all action buttons */
+.action-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.action-button:active {
+    transform: scale(0.98);
+}
+
+/* Style for the "Mark as Shipped" button (Green) */
+.action-button.ship {
+    background-color: #2c7a7b; /* Dark green from your theme */
+    color: #ffffff;
+}
+
+.action-button.ship:hover {
+    background-color: #286a6b;
+}
+
+/* Style for the "Cancel" button (Pink/Red) */
+.action-button.cancel {
+    background-color: #ffe5ec; /* Pink from your theme */
+    color: #c5306c; /* Darker pink from your theme */
+}
+
+.action-button.cancel:hover {
+    background-color: #fddde5;
+}
+
+/* Responsive adjustment for mobile */
+@media (max-width: 768px) {
+    .pending-orders-page .table-row {
+        grid-template-columns: 1fr; /* Stack everything on mobile */
+    }
+    .order-actions {
+        justify-content: center; /* Center buttons on mobile */
+        margin-top: 0.5rem;
+    }
+}
 /* Header Styles */
 .dashboard-header h1 {
     font-size: 1.75rem;
@@ -354,4 +418,52 @@ body {
 
 .save-button:hover {
     background-color: #333333;
+}
+/* Add this to your Dashboard.css file */
+
+/* Extending table for 6 columns */
+.received-orders-page .table-header,
+.received-orders-page .table-row {
+    grid-template-columns: 1fr 2fr 1.5fr 1.5fr 1.5fr 1.5fr;
+    background-color: #f9f5ff; /* Re-using the purple style from your theme */
+}
+
+/* Style for the "Mark as Paid" button (Purple) */
+.action-button.pay {
+    background-color: #805ad5; /* Purple from your theme */
+    color: #ffffff;
+}
+
+.action-button.pay:hover {
+    background-color: #6b46c1;
+}
+
+/* General styles for status tags */
+.status-pending { color: #d69e2e; font-weight: 600; text-transform: capitalize; }
+.status-shipped { color: #38a169; font-weight: 600; text-transform: capitalize; }
+.status-successful { color: #38a169; font-weight: 600; text-transform: capitalize; }
+.status-delivered { color: #3182ce; font-weight: 600; text-transform: capitalize; }
+.status-cancelled { color: #e53e3e; font-weight: 600; text-transform: capitalize; }
+.status-failed { color: #e53e3e; font-weight: 600; text-transform: capitalize; }
+
+/* Existing base styles for buttons if you haven't added them yet */
+.order-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-start;
+}
+
+.action-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.action-button:active {
+    transform: scale(0.98);
 }

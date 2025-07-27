@@ -34,6 +34,11 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    stock: { // <-- Add this field
+      type: Number,
+      required: true,
+      default: 0,
+    },
 
     deliveryAvailable: {
       type: Boolean,
@@ -50,6 +55,11 @@ const OrderSchema = new mongoose.Schema(
     paymentStatus: {
       type: String,
       enum: ["pending", "successful", "failed"],
+      default: "pending",
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["COD", "Online"],
       default: "pending",
     },
   },

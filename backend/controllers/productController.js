@@ -4,7 +4,7 @@ const Product = require("../models/Product");
 exports.createProduct = async (req, res) => {
   try {
     if (req.user.role !== "supplier") {
-      return res.status(403).json({ message: "Forbidden" });
+      return res.status(403).json({ message: "Forbidden: Only suppliers can create products." });
     }
 
     const {
@@ -14,6 +14,7 @@ exports.createProduct = async (req, res) => {
       unit,
       availableQuantity,
       imageUrl,
+      videoUrl, // Added videoUrl
       deliveryAvailable,
       category
     } = req.body;
@@ -26,6 +27,7 @@ exports.createProduct = async (req, res) => {
       unit,
       availableQuantity,
       imageUrl,
+      videoUrl, // Added videoUrl
       deliveryAvailable,
       category
     });
@@ -38,10 +40,20 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Get all products
+// Get all products with optional filtering by category
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("supplierId", "name shopName location");
+    const { category } = req.query; // e.g., /api/products?category=Oil
+    const filter = {};
+
+    if (category) {
+      filter.category = category;
+    }
+
+    const products = await Product.find(filter)
+      .populate("supplierId", "name shopName location")
+      .sort({ createdAt: -1 }); // Sort by newest first
+
     res.json(products);
   } catch (err) {
     console.error("Fetch products error:", err);
@@ -53,29 +65,22 @@ exports.getProducts = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: "Product not found" });
-
-    if (req.user.role !== "supplier" || product.supplierId.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Forbidden" });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
     }
 
-    const allowedFields = [
-      "name",
-      "pricePerUnit",
-      "actualPerUnit",
-      "unit",
-      "availableQuantity",
-      "imageUrl",
-      "deliveryAvailable",
-      "category"
-    ];
+    // Authorization check: user must be a supplier and own the product
+    if (req.user.role !== "supplier" || product.supplierId.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden: You are not authorized to update this product." });
+    }
 
-    allowedFields.forEach(field => {
-      if (req.body[field] !== undefined) product[field] = req.body[field];
-    });
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
 
-    const updated = await product.save();
-    res.json(updated);
+    res.json(updatedProduct);
   } catch (err) {
     console.error("Update product error:", err);
     res.status(500).json({ message: "Server error" });
@@ -86,14 +91,18 @@ exports.updateProduct = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: "Product not found" });
-
-    if (req.user.role !== "supplier" || product.supplierId.toString() !== req.user.id) {
-      return res.status(403).json({ message: "Forbidden" });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
     }
 
-    await product.deleteOne();
-    res.json({ message: "Product deleted" });
+    // Authorization check: user must be a supplier and own the product
+    if (req.user.role !== "supplier" || product.supplierId.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden: You are not authorized to delete this product." });
+    }
+
+    await Product.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Product deleted successfully" });
   } catch (err) {
     console.error("Delete product error:", err);
     res.status(500).json({ message: "Server error" });

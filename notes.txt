@@ -1,64 +1,19 @@
-👥 Authentication & Role Management
-✅ Vendors and Suppliers can register and login
-✅ JWT-based secure auth system
-✅ Role-based access (vendor/supplier protected routes)
+{
+    "_id": "6884dce0906e95dfcfc9b576",
+    "shopName": "Prem sai Chai Tapri",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODRkY2UwOTA2ZTk1ZGZjZmM5YjU3NiIsInJvbGUiOiJzdXBwbGllciIsImlhdCI6MTc1MzUzNzc2MSwiZXhwIjoxNzU2MTI5NzYxfQ.MxH0QyY0PfLWKVo19PhyXfdeuR-wcRMnqL6Uyc_7ht0"
+}
 
-—
+{
+    "_id": "6884df21a013213f25cc7c7f",
+    "name": "Sai Krishna Siddu",
+    "phone": "1234565432",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODRkZjIxYTAxMzIxM2YyNWNjN2M3ZiIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE3NTM1MzgzMzcsImV4cCI6MTc1NjEzMDMzN30.K2bo4S1sduEWfeOcZzmQj3WsT2NkV7qYbyf04tGw-7M"
+}
 
-🧑‍🍳 Vendor Dashboard
-✅ View and update profile
-✅ Discover available suppliers & products
-✅ View product details (price, actual market price, discounts)
-✅ Join group buys to reduce cost
-✅ Leave reviews for products & suppliers
-
-—
-
-🏭 Supplier Dashboard
-✅ Create, edit, and delete products
-✅ View own listed products
-✅ Add actual market price vs selling price
-✅ Upload images, category tagging
-✅ Set unit pricing (kg, litre, pack, piece)
-✅ Track inventory (availableQuantity)
-✅ See who purchased / joined group buys (optionally)
-
-—
-
-📦 Product System
-✅ Publicly viewable product catalog
-✅ Supplier-owned CRUD operations
-✅ Fields include:
-
-name, pricePerUnit, actualPerUnit, unit
-
-imageUrl, deliveryAvailable, category
-✅ Future scalability: discount %, ratings, stock alerts
-
-—
-
-🌍 Review & Rating Engine
-✅ Vendors can rate products & suppliers
-✅ Each review includes:
-
-stars (1–5), comment, vendor ID
-✅ Suppliers and products show average ratings
-✅ Reviews influence vendor trust & buying decisions
-
-—
-
-🛒 Group Buying System
-✅ Vendors can join a product-specific group buy
-✅ Price drops as more vendors join (bulk purchase)
-✅ Tracks vendor participants, product, target quantity
-✅ Suppliers get notified when target is met
-✅ Future scope: live countdowns, discounts, auto-ordering
-
-—
-
-📱 API Backend Ready (Node.js + Express + MongoDB)
-✅ Clean route separation: /auth, /vendors, /suppliers, /products, /groupbuys, /reviews
-✅ Controllers handle all business logic
-✅ Secure token-based middleware
-✅ Error handling middleware included
-✅ Scalable structure for teams & features
+{
+    "_id": "6884ee0e84257443e1615aa4",
+    "name": "Ayesha Khan",
+    "phone": "98765432107",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ODRlZTBlODQyNTc0NDNlMTYxNWFhNCIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE3NTM1NDIxNTgsImV4cCI6MTc1NjEzNDE1OH0.4iqJLcz3FeX9qWJSIt0G4vrODC6zd8cfrZNLfVCjZ9U"
+}

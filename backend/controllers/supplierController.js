@@ -4,41 +4,8 @@ const jwt = require("jsonwebtoken");
 
 // Generate JWT
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+  return jwt.sign({ id ,role}, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
-
-// 1. Register a new supplier
-const registerSupplier = async (req, res) => {
-  try {
-    const { shopName, ownerName, phone, email, password, supplierType, address } = req.body;
-
-    const existing = await Supplier.findOne({ phone });
-    if (existing) return res.status(400).json({ message: "Supplier already exists" });
-
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    const newSupplier = await Supplier.create({
-      shopName,
-      ownerName,
-      phone,
-      email,
-      passwordHash,
-      supplierType,
-      address,
-    });
-
-    res.status(201).json({
-      _id: newSupplier._id,
-      shopName: newSupplier.shopName,
-      token: generateToken(newSupplier._id),
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 
 // 2. Get logged-in supplier profile
 const getSupplierProfile = async (req, res) => {
@@ -50,19 +17,69 @@ const getSupplierProfile = async (req, res) => {
 
 // 3. Update supplier profile
 const updateSupplierProfile = async (req, res) => {
-  const supplier = await Supplier.findById(req.user.id);
-  if (!supplier) return res.status(404).json({ message: "Supplier not found" });
+  try {
+      // req.user.id should be available from your 'protect' middleware
+      const supplier = await Supplier.findById(req.user.id);
+      if (!supplier) {
+          return res.status(404).json({ message: "Supplier not found" });
+      }
 
-  const updates = req.body;
+      const { 
+          shopName, 
+          ownerName, 
+          phone, 
+          email, 
+          password, 
+          address, 
+          supplierType, 
+          gstNumber, 
+          licenseNumber, 
+          deliveryOptions, 
+          isActive 
+      } = req.body;
 
-  if (updates.password) {
-    const salt = await bcrypt.genSalt(10);
-    updates.passwordHash = await bcrypt.hash(updates.password, salt);
-    delete updates.password;
+      const updateData = {};
+      if (shopName) updateData.shopName = shopName;
+      if (ownerName) updateData.ownerName = ownerName;
+      if (address) updateData.address = address;
+      if (supplierType) updateData.supplierType = supplierType;
+      if (gstNumber) updateData.gstNumber = gstNumber;
+      if (licenseNumber) updateData.licenseNumber = licenseNumber;
+      if (deliveryOptions) updateData.deliveryOptions = deliveryOptions;
+      if (typeof isActive === 'boolean') updateData.isActive = isActive;
+
+      if (email && email !== supplier.email) {
+          const existing = await Supplier.findOne({ email });
+          if (existing) {
+              return res.status(400).json({ message: "This email is already in use." });
+          }
+          updateData.email = email;
+      }
+
+      if (phone && phone !== supplier.phone) {
+          const existing = await Supplier.findOne({ phone });
+          if (existing) {
+              return res.status(400).json({ message: "This phone number is already in use." });
+          }
+          updateData.phone = phone;
+      }
+
+      if (password) {
+          const salt = await bcrypt.genSalt(10);
+          updateData.passwordHash = await bcrypt.hash(password, salt);
+      }
+
+      const updatedSupplier = await Supplier.findByIdAndUpdate(
+          req.user.id, 
+          { $set: updateData }, 
+          { new: true, runValidators: true }
+      ).select("-passwordHash");
+
+      res.json(updatedSupplier);
+  } catch (error) {
+      console.error("Update supplier profile error:", error);
+      res.status(500).json({ message: "Server Error" });
   }
-
-  const updated = await Supplier.findByIdAndUpdate(req.user.id, updates, { new: true }).select("-passwordHash");
-  res.json(updated);
 };
 
 // 4. Public: List all suppliers
@@ -72,7 +89,6 @@ const listSuppliers = async (req, res) => {
 };
 
 module.exports = {
-  registerSupplier,
   getSupplierProfile,
   updateSupplierProfile,
   listSuppliers,

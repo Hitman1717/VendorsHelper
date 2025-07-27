@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser } = require("../controllers/authController");
-const {registerSupplier,getSupplierProfile} = require("../controllers/supplierController")
-router.post("/register", registerUser);
- // Accepts role: 'vendor' or 'supplier'
+const { registerVendor, loginUser,registerSupplier } = require("../controllers/authController");
+const {getSupplierProfile} = require("../controllers/supplierController")
+router.post("/registervendor", registerVendor);
 router.post("/registersupply",registerSupplier)
 router.post("/login", loginUser);
 

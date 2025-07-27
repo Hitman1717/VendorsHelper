@@ -1,0 +1,32 @@
+{
+    "name": "Deepa Joshi",
+    "businessName": "Deepa Agro Supply",
+    "phone": "9090909090",
+    "email": "deepa.agro@example.com",
+    "password": "deepaagro@456",
+    "businessLocation": "Kukatpally",
+    "landMark": "Opposite Forum Mall",
+    "pincode": "500072",
+    "role": "supplier"
+}   http://localhost:5000/api/auth/register 
+
+{
+    
+    "email": "deepa.agro@example.com",
+    "password": "deepaagro@456"
+    
+  }
+http://localhost:5000/api/auth/login
+
+{
+    "name": "Premium Basmati Rice",
+    "pricePerUnit": 90,
+    "actualPerUnit": 100,
+    "unit": "kg",
+    "availableQuantity": 200,
+    "imageUrl": "https://example.com/images/basmati-rice.jpg",
+    "videoUrl": "https://example.com/videos/basmati-rice.mp4",
+    "deliveryAvailable": true,
+    "category": "Grains"
+  }
+http://localhost:5000/api/products/ ->post 

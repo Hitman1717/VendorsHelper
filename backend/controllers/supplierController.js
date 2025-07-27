@@ -1,6 +1,8 @@
 const Supplier = require("../models/Supplier");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Order = require("../models/Order");
+
 
 // Generate JWT
 const generateToken = (id) => {
@@ -88,8 +90,28 @@ const listSuppliers = async (req, res) => {
   res.json(suppliers);
 };
 
+
+// @desc Get all orders received by the logged-in supplier
+// @route GET /api/orders/supplier
+// @access Private (Supplier only)
+const getOrdersForSupplier = async (req, res) => {
+  try {
+    const orders = await Order.find({ supplierId: req.user.id })
+      .populate("vendorId", "name businessName phone")
+      .populate("productId", "name unit imageUrl category")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error getting supplier orders:", error);
+    res.status(500).json({ message: "Server error fetching orders" });
+  }
+};
+
+
 module.exports = {
   getSupplierProfile,
   updateSupplierProfile,
   listSuppliers,
+  getOrdersForSupplier,
 };

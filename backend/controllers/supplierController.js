@@ -138,20 +138,20 @@ const updateOrderStatus = async (req, res) => {
     }
 
     // ✅ NEW LOGIC STARTS HERE
-    if (deliveryStatus === 'shipped') {
-      const product = await Product.findById(order.productId).session(session);
+    // if (deliveryStatus === 'shipped') {
+    //   const product = await Product.findById(order.productId).session(session);
 
-      // 1. Check if there is enough stock
-      if (product.availableQuantity < order.quantity) {
-        await session.abortTransaction();
-        session.endSession();
-        return res.status(400).json({ message: `Not enough stock to ship. Only ${product.availableQuantity}${product.unit} left.` });
-      }
+    //   // 1. Check if there is enough stock
+    //   if (product.availableQuantity < order.quantity) {
+    //     await session.abortTransaction();
+    //     session.endSession();
+    //     return res.status(400).json({ message: `Not enough stock to ship. Only ${product.availableQuantity}${product.unit} left.` });
+    //   }
 
-      // 2. If stock is available, deduct it
-      product.availableQuantity -= order.quantity;
-      await product.save({ session });
-    }
+    //   // 2. If stock is available, deduct it
+    //   product.availableQuantity -= order.quantity;
+    //   await product.save({ session });
+    // }
     // ✅ NEW LOGIC ENDS HERE
 
     order.deliveryStatus = deliveryStatus;
